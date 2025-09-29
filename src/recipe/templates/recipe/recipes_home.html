@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome - Recipe App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        line-height: 1.8;
+        color: #2c3e50;
+        background: #fefefe;
+      }
+
+      .navbar {
+        padding: 2rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f0e6dc;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: normal;
+        color: #d35400;
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #5a5a5a;
+        font-size: 0.95rem;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #d35400;
+      }
+
+      .hero {
+        padding: 8rem 5% 6rem;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 400;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 3rem;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 1rem 3rem;
+        background: #d35400;
+        color: white;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 1rem;
+        transition: background 0.3s;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .cta-button:hover {
+        background: #b84700;
+      }
+
+      .divider {
+        width: 60px;
+        height: 2px;
+        background: #d35400;
+        margin: 4rem auto;
+      }
+
+      .features {
+        padding: 4rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .features h2 {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        color: #2c3e50;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
+      }
+
+      .feature-card {
+        text-align: center;
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .feature-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+        color: #d35400;
+        font-weight: 400;
+      }
+
+      .feature-card p {
+        font-size: 0.95rem;
+        color: #666;
+        font-family: "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      .popular-recipes {
+        padding: 6rem 5%;
+        background: #faf8f5;
+        margin-top: 4rem;
+      }
+
+      .popular-recipes h2 {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 3rem;
+        color: #2c3e50;
+      }
+
+      .recipe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .recipe-card {
+        background: white;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .recipe-img {
+        width: 100%;
+        height: 280px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        overflow: hidden;
+        margin-bottom: 1.2rem;
+      }
+
+      .recipe-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .recipe-info h3 {
+        font-size: 1.3rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+      }
+
+      .recipe-info p {
+        font-size: 0.95rem;
+        color: #777;
+        font-family: "Segoe UI", sans-serif;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .btn-primary {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background: #d35400;
+        color: white;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        transition: background 0.3s;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .btn-primary:hover {
+        background: #b84700;
+      }
+
+      .footer {
+        padding: 3rem 5%;
+        text-align: center;
+        color: #999;
+        font-size: 0.9rem;
+        border-top: 1px solid #f0e6dc;
+        margin-top: 4rem;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .navbar {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-links {
+          gap: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <span>🍳</span>
+        <span>RecipeApp</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="">Home</a></li>
+        <li><a href="">Recipes</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="">Profile</a></li>
+        <li><a href="">Logout</a></li>
+        {% else %}
+        <li><a href="">Login</a></li>
+        <li><a href="">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <h1>Cook with confidence</h1>
+      <p>
+        A thoughtful collection of recipes for every occasion, tested and loved
+        by home cooks
+      </p>
+      <a href="" class="cta-button">Browse Recipes</a>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="features">
+      <h2>Simple cooking, made easier</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📖</div>
+          <h3>Vast Collection</h3>
+          <p>
+            Access thousands of recipes from various cuisines around the world
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>Save Favorites</h3>
+          <p>Bookmark your favorite recipes and access them anytime</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✍️</div>
+          <h3>Share Your Recipes</h3>
+          <p>Create and share your own recipes with the community</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Easy Search</h3>
+          <p>Find recipes by ingredients, cuisine, or dietary preferences</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="popular-recipes">
+      <h2>Recently Added</h2>
+      <div class="recipe-grid">
+        {% for recipe in popular_recipes %}
+        <a href="{% url 'recipe_detail' recipe.id %}" class="recipe-card">
+          <div class="recipe-img">
+            {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+            {% else %} 🍽️ {% endif %}
+          </div>
+          <div class="recipe-info">
+            <h3>{{ recipe.title }}</h3>
+            <p>{{ recipe.description|truncatewords:15 }}</p>
+            <span class="btn-primary">View Recipe</span>
+          </div>
+        </a>
+        {% empty %}
+        <p style="grid-column: 1/-1; text-align: center; color: #999">
+          No recipes yet. Start by adding your first recipe!
+        </p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>&copy; 2025 RecipeApp. Made with care for home cooks.</p>
+    </footer>
+  </body>
+</html>
