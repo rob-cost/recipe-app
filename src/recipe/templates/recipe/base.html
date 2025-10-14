@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'recipes/css/style.css'%}" />
+    <title>{% block title %}Recipes Website {% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <span>🍳</span>
+        <span>RecipeApp</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'recipes' %}">Recipes</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="">Logout</a></li>
+        {% else %}
+        <li><a href="">Login</a></li>
+        <li><a href="">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    {%block content%} {%endblock%}
+
+    <footer class="footer">
+      <p>&copy; 2025 Recipe Collection. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

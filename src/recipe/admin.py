@@ -4,5 +4,5 @@ from .models import Recipe
 @admin.register(Recipe)
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'cooking_time', 'difficulty', 'likes']
+    list_display = ['name', 'cooking_time', 'difficulty']
     readonly_fields = ['difficulty']

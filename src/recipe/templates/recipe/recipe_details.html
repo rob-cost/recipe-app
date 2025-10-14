@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% extends 'recipe/base.html' %} {% load static %} {% block title %}{{
+recipe.name }} - Recipe Collection{% endblock %} {% block content %}
+<!-- Recipe Details Container -->
+<section class="recipe-detail-container">
+  <!-- Top Section: Image Left, Info Right -->
+  <div class="recipe-main-section">
+    <!-- Left: Recipe Image -->
+    <div class="recipe-image-container">
+      {% if recipe.pic %}
+      <img src="{{ recipe.pic.url }}" alt="{{ recipe.name }}" />
+      {% else %}
+      <div class="recipe-image-placeholder">🍽️</div>
+      {% endif %}
+    </div>
+
+    <!-- Right: Recipe Info -->
+    <div class="recipe-info-section">
+      <h1>{{ recipe.name }}</h1>
+
+      <!-- Recipe Stats -->
+      <div class="recipe-stats">
+        <span style="color: #5a5a5a"
+          ><strong>⏱️ Time:</strong> {{ recipe.cooking_time }} mins</span
+        >
+        <span style="color: #5a5a5a"
+          ><strong>📊 Difficulty:</strong> {{ recipe.difficulty }}</span
+        >
+        <span style="color: #5a5a5a"
+          ><strong>❤️ Likes:</strong> {{ total_likes }}</span
+        >
+      </div>
+
+      <!-- Ingredients -->
+      <h2>Ingredients</h2>
+      <ul class="ingredients-list">
+        {% for ingredient in ingredients %}
+        <li>✓ {{ ingredient|title }}</li>
+        {% endfor %}
+      </ul>
+
+      <!-- Like Button -->
+      <form
+        method="POST"
+        action="{% url 'toggle_like' recipe.id%}"
+        class="like-form"
+      >
+        {% csrf_token %}
+        <button
+          type="submit"
+          class="btn-primary like-button {%if user_has_liked%} unliked {%endif%}"
+        >
+          {% if user_has_liked %} 💔 Unlike this Recipe {% else %} ❤️ Like this
+          Recipe {% endif %}
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Cooking Method -->
+  <div class="cooking-method-section">
+    <h2>Cooking Method</h2>
+    <div class="cooking-method-section-text">{{ recipe.method }}</div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="back-button-container">
+    <a href="{% url 'recipes' %}" class="btn-primary btn-back">
+      ← Back to All Recipes
+    </a>
+  </div>
+</section>
+{% endblock %}

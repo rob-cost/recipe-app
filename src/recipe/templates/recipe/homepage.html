@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends "recipe/base.html" %} {% block title %} Homepage {%endblock%}
+<!--  -->
+{%block content %}
+<section class="hero">
+  <h1>Cook with confidence</h1>
+  <p>
+    A thoughtful collection of recipes for every occasion, tested and loved by
+    home cooks
+  </p>
+  <a href="{%url 'recipes'%}" class="cta-button">Browse Recipes</a>
+</section>
+
+<div class="divider"></div>
+<section class="popular-recipes">
+  <h2>Recently Added</h2>
+  <div class="recipe-grid">
+    {% for recipe in popular_recipes %}
+    <a href="{% url 'recipe_detail' recipe.id %}" class="recipe-card">
+      <div class="recipe-img">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+        {% else %} 🍽️ {% endif %}
+      </div>
+      <div class="recipe-info">
+        <h3>{{ recipe.title }}</h3>
+        <p>{{ recipe.description|truncatewords:15 }}</p>
+        <span class="btn-primary">View Recipe</span>
+      </div>
+    </a>
+    {% empty %}
+    <p style="grid-column: 1/-1; text-align: center; color: #999">
+      No recipes yet. Start by adding your first recipe!
+    </p>
+    {% endfor %}
+  </div>
+</section>
+{%endblock%}

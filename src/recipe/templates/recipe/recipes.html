@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends "recipe/base.html" %} {% block title %} All Recipes List {%endblock%}
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Discover Amazing Recipes</h1>
+  <p>Explore our collection of delicious recipes from around the world</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- All Recipes Section -->
+<section class="popular-recipes">
+  <h2>All Recipes ({{ recipes.count }})</h2>
+
+  {% if recipes %}
+  <div class="recipe-grid">
+    {% for recipe in recipes %}
+    <a href="{%url 'recipe_details' recipe.id%}" class="recipe-card">
+      <div class="recipe-img">
+        <img src="{{ recipe.pic.url }}" alt="{{ recipe.name }}" />
+      </div>
+      <div class="recipe-info">
+        <h3>{{ recipe.name }}</h3>
+        <p>
+          <strong>Cooking Time:</strong> {{ recipe.cooking_time }} mins |
+          <strong>Difficulty:</strong> {{ recipe.difficulty }}
+        </p>
+        <p>{{ recipe.method|truncatewords:10 }}</p>
+        <span class="btn-primary">View Recipe</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="text-align: center; color: #777; font-size: 1.1rem">
+    No recipes available yet. Check back soon!
+  </p>
+  {% endif %}
+</section>
+{%endblock%}
