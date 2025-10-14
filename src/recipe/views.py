@@ -1,18 +1,55 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Recipe
 from django.contrib.auth.models import User
 
 
+
+def login_view(request):
+
+    if request.method == "POST":
+        form = AuthenticationForm(data = request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username = username, password = password)
+            if user:
+                login(request, user)
+                return redirect('homepage')
+        else:
+            messages.error(f'Oops... please try again later!')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'auth/login.html', {'form': form})
+    
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def signup_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(data = request.POST)
+        user = form.save()
+        User.objects.create(user = user)
+        login(request, user)
+        return redirect('homepage')
+    else:
+        form = UserCreationForm()
+        return render(request, 'auth/signup.html', {'form': form})
+
 def homepage_view(request):
     return render(request, 'recipe/homepage.html')
 
+@login_required
 def recipes_view(request):
     recipes = Recipe.objects.all()
     print(f'Recipes count: {recipes.count()}')
     return render(request, 'recipe/recipes.html', {'recipes': recipes})
 
-# @login_required
+@login_required
 def recipe_details(request, recipe_id):
     user = request.user
     recipe = get_object_or_404(Recipe, id = recipe_id)
@@ -34,6 +71,7 @@ def recipe_details(request, recipe_id):
 
     return render(request,'recipe/recipe_details.html', context)
 
+@login_required
 def toggle_like(request, recipe_id):
     user = request.user
     recipe = get_object_or_404(Recipe, id = recipe_id)

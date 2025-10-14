@@ -3,12 +3,23 @@
 <!--  -->
 {%block content %}
 <section class="hero">
-  <h1>Cook with confidence</h1>
+  {% if user.is_authenticated %}
+  <h1>Welcome back {{user.username}}</h1>
   <p>
-    A thoughtful collection of recipes for every occasion, tested and loved by
-    home cooks
+    Here you will find a thoughtful collection of recipes for every occasion,
+    tested and loved by home cooks!
   </p>
   <a href="{%url 'recipes'%}" class="cta-button">Browse Recipes</a>
+
+  {% else %}
+
+  <h1>Welcome to Recipe App</h1>
+  <p>
+    Here you will find a thoughtful collection of recipes for every occasion,
+    tested and loved by home cooks!
+  </p>
+  <a href="{%url 'login'%}" class="cta-button">Login to start exploring</a>
+  {%endif%}
 </section>
 
 <div class="divider"></div>
