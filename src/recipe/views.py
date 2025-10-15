@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Recipe
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 
@@ -20,13 +21,18 @@ def login_view(request):
                 login(request, user)
                 return redirect('homepage')
         else:
-            messages.error(f'Oops... please try again later!')
-    else:
-        form = AuthenticationForm()
-        return render(request, 'auth/login.html', {'form': form})
+            messages.error(request, 'Invalid username or password')
+    
+    form = AuthenticationForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'auth/login.html', context)
     
 def logout_view(request):
     logout(request)
+    messages.success(request, 'You have successfuly logged out!')
     return redirect('login')
 
 def signup_view(request):

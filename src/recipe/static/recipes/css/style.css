@@ -57,6 +57,30 @@
           color: #d35400;
       }
 
+      .messages {
+          margin: 20px 0;
+      }
+
+      .alert {
+          padding: 15px 20px;
+          margin-bottom: 15px;
+          border-radius: 8px;
+          font-weight: 500;
+          box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .alert-success,
+      .alert-info {
+          background-color: #d4edda;
+          color: #155724;
+          border-left: 4px solid #2ecc71;
+      }
+
+      .alert-error {
+          background-color: #f8d7da;
+          color: #721c24;
+          border-left: 4px solid #e74c3c;
+      }
 
       /* Login */
 
@@ -84,6 +108,11 @@
           font-weight: 400;
           margin-bottom: 1.5rem;
           color: #2c3e50;
+          text-align: center;
+      }
+
+      .error p {
+          color: #d35400;
           text-align: center;
       }
 
