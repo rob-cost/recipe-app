@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 
 
 
+
 def login_view(request):
 
     if request.method == "POST":
@@ -36,18 +37,28 @@ def logout_view(request):
     return redirect('login')
 
 def signup_view(request):
-    if request.method == "POST":
-        form = UserCreationForm(data = request.POST)
-        user = form.save()
-        User.objects.create(user = user)
-        login(request, user)
-        return redirect('homepage')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Automatically hashes the password
+            login(request, user)  
+            return redirect('homepage')
     else:
         form = UserCreationForm()
-        return render(request, 'auth/signup.html', {'form': form})
+
+    return render(request, 'auth/signup.html', {'form': form})
 
 def homepage_view(request):
-    return render(request, 'recipe/homepage.html')
+    recipes = Recipe.objects.all()
+    popular_recipes = []
+    for recipe in recipes:
+        recipe_likes_count = recipe.liked_by.count()
+        if recipe_likes_count >=1:
+            popular_recipes.append(recipe)
+    context = {
+        'popular_recipes': popular_recipes
+    }
+    return render(request, 'recipe/homepage.html', context)
 
 @login_required
 def recipes_view(request):

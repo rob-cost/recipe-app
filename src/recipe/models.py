@@ -12,6 +12,7 @@ class Recipe (models.Model):
     method = models.TextField(help_text="Describe the cooking method of the recipe")
     pic = models.ImageField(upload_to='recipes', default='no_picture.jpg')
     liked_by = models.ManyToManyField(User, related_name='liked_recipe', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def calculateDifficulty(self):
         items = [i.strip() for i in self.ingredients.split(",") if i.strip()]
