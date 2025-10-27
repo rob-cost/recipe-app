@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% extends "recipe/base.html" %} {% block title %} Homepage {%endblock%}
+<!--  -->
+{%block content %}
+<!-- Search Section -->
+<section class="search-section">
+  <div class="search-container">
+    <h1>Find Your Perfect Recipe</h1>
+    <div class="divider"></div>
+
+    <form method="get" class="search-form" id="searchForm">
+      <div class="search-grid">
+        <div class="form-group">
+          <label for="{{ form.name.id_for_label }}">Recipe Name</label>
+          {{ form.name }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.ingredients.id_for_label }}">Ingredients</label>
+          {{ form.ingredients }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.max_cooking_time.id_for_label }}"
+            >Max Cooking Time (minutes)</label
+          >
+          {{ form.max_cooking_time }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.difficulty.id_for_label }}"
+            >Difficulty Level</label
+          >
+          {{ form.difficulty }}
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit search-btn">
+        Search Recipes
+      </button>
+    </form>
+  </div>
+</section>
+
+{% if recipes %}
+<section class="popular-recipes">
+  <h2>
+    Search Results ({{ recipes.count }} recipe{{ recipes.count|pluralize }})
+  </h2>
+  <div class="recipe-grid">
+    {% for recipe in recipes %}
+    <a href="{% url 'recipe_details' recipe.id %}" class="recipe-card">
+      <div class="recipe-img">
+        {% if recipe.pic %}
+        <img src="{{ recipe.pic.url }}" alt="{{ recipe.title }}" />
+        {% else %} 🍽️ {% endif %}
+      </div>
+      <div class="recipe-info">
+        <h3>{{ recipe.name }}</h3>
+        <p>{{ recipe.method|truncatewords:15 }}</p>
+        <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
+        <p><strong>Cooking Time:</strong> {{ recipe.cooking_time }} min</p>
+        <span class="btn-primary">View Recipe</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% elif request.GET %}
+<section class="popular-recipes">
+  <div style="text-align: center; padding: 3rem">
+    <h2>No recipes found</h2>
+    <p style="color: #777; margin-top: 1rem">
+      Try adjusting your search criteria
+    </p>
+  </div>
+</section>
+{% endif %} {% if chart %}
+<section class="chart-section">
+  <h2>Data Visualization</h2>
+  <div style="text-align: center; margin-top: 2rem">
+    <img
+      src="data:image/png;base64,{{ chart }}"
+      alt="Recipe Chart"
+      style="max-width: 600px"
+    />
+  </div>
+</section>
+{% endif %}{%endblock%} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("searchForm");
+
+    form.addEventListener("submit", function () {
+      sessionStorage.setItem("searchSubmitted", "true");
+    });
+
+    if (sessionStorage.getItem("searchSubmitted") === "true") {
+      // Reset input fields
+      form.reset();
+      // Remove query params from the URL (optional)
+      window.history.replaceState({}, document.title, window.location.pathname);
+      // Keep results visible
+      sessionStorage.removeItem("searchSubmitted");
+    }
+  });
+</script>
+{% endblock %}

@@ -15,6 +15,7 @@
       </div>
       <ul class="nav-links">
         <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'search' %}">Search</a></li>
         <li><a href="{% url 'recipes' %}">Recipes</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -30,5 +31,7 @@
     <footer class="footer">
       <p>&copy; 2025 Recipe Collection. All rights reserved.</p>
     </footer>
+
+    {% block scripts %} {% endblock %}
   </body>
 </html>

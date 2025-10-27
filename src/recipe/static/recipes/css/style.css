@@ -512,6 +512,72 @@
           margin-top: 4rem;
       }
 
+      /* Search Recipe Page */
+      .search-section {
+          min-height: 60vh;
+          max-width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem 5%;
+      }
+
+      .search-container {
+          background: rgba(250, 248, 245, 0.95);
+          padding: 2.5rem;
+          border-radius: 5px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          width: 100%;
+          max-width: 900px;
+      }
+
+      .search-container h1 {
+          text-align: center;
+          font-size: 2.2rem;
+          font-weight: 400;
+          margin-bottom: 0.5rem;
+          color: #2c3e50;
+      }
+
+      .search-form {
+          margin-top: 2rem;
+      }
+
+      .search-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+      }
+
+      .search-grid .form-group {
+          margin-bottom: 0;
+      }
+
+      .search-grid .form-group input,
+      .search-grid .form-group select {
+          width: 100%;
+          padding: 0.8rem 1rem;
+          border: 1px solid #f0e6dc;
+          border-radius: 3px;
+          font-size: 0.95rem;
+          font-family: "Segoe UI", sans-serif;
+          transition: border-color 0.3s;
+          box-sizing: border-box;
+          background: white;
+      }
+
+      .search-grid .form-group input:focus,
+      .search-grid .form-group select:focus {
+          outline: none;
+          border-color: #d35400;
+      }
+
+      .search-btn {
+          margin-top: 0.5rem;
+          width: 25%;
+      }
+
       @media (max-width: 768px) {
           .hero h1 {
               font-size: 2.5rem;
@@ -546,5 +612,17 @@
               margin: 2rem auto;
               padding: 2rem 1.5rem;
               max-width: 90%;
+          }
+
+          .search-grid {
+              grid-template-columns: 1fr;
+          }
+
+          .search-container {
+              padding: 2rem 1.5rem;
+          }
+
+          .search-container h1 {
+              font-size: 1.8rem;
           }
       }

@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Recipe
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
-
+from .forms import RecipeSearchForm
+import pandas as pd
+from .utils import get_chart
 
 
 def login_view(request):
@@ -101,6 +102,56 @@ def toggle_like(request, recipe_id):
     
     return redirect('recipe_details', recipe_id = recipe_id)
 
+@login_required
+def search_view(request):
+    form = RecipeSearchForm(request.GET or None)
+    recipes = None
+    chart = None
+    
+    if request.GET and form.is_valid():
 
+        recipes = Recipe.objects.all()
 
+        if form.cleaned_data.get('name'):
+            recipes = recipes.filter(name__icontains=form.cleaned_data['name'])
+        
+        if form.cleaned_data.get('ingredients'):
+            ingredients_list = [i.strip() for i in form.cleaned_data['ingredients'].split(',')]
+            for ingredient in ingredients_list:
+                recipes = recipes.filter(ingredients__icontains=ingredient)
+        
+        if form.cleaned_data.get('difficulty'):
+            recipes = recipes.filter(difficulty=form.cleaned_data['difficulty'])
+        
+        if form.cleaned_data.get('max_cooking_time'):
+            recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
+        if recipes.exists():
+            recipe_df = pd.DataFrame(recipes.values(
+                'name', 'difficulty', 'cooking_time'
+            ))
+
+            # ✅ Step 2: Create a chart (example: average cooking time per difficulty)
+            summary = (
+                recipe_df.groupby('difficulty')['cooking_time']
+                .mean()
+                .reset_index()
+            )
+
+            # ✅ Step 3: Generate chart
+            chart = get_chart(
+                chart_type="#1",  # your bar chart type
+                data=summary.rename(columns={'difficulty': 'date_created', 'cooking_time': 'quantity'})
+            )
+        else:
+            recipe_df = None
+    else:
+        recipe_df = None
+    
+    context = {
+        'form': form, 
+        'recipes': recipes,
+        'chart': chart
+    }
+
+    return render(request, 'recipe/recipes_search.html', context)
