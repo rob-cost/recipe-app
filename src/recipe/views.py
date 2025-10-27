@@ -106,7 +106,7 @@ def toggle_like(request, recipe_id):
 def search_view(request):
     form = RecipeSearchForm(request.GET or None)
     recipes = None
-    chart = None
+    chart_bar = chart_pie = chart_line = None
     
     if request.GET and form.is_valid():
 
@@ -126,23 +126,21 @@ def search_view(request):
         if form.cleaned_data.get('max_cooking_time'):
             recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
+        # ✅ Generate the chart data
         if recipes.exists():
-            recipe_df = pd.DataFrame(recipes.values(
-                'name', 'difficulty', 'cooking_time'
-            ))
+            recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
 
-            # ✅ Step 2: Create a chart (example: average cooking time per difficulty)
-            summary = (
-                recipe_df.groupby('difficulty')['cooking_time']
-                .mean()
-                .reset_index()
-            )
+            # --- 1. Bar chart: Recipe names vs cooking time ---
+            chart_bar = get_chart('bar', recipe_df)
 
-            # ✅ Step 3: Generate chart
-            chart = get_chart(
-                chart_type="#1",  # your bar chart type
-                data=summary.rename(columns={'difficulty': 'date_created', 'cooking_time': 'quantity'})
-            )
+            # --- 2. Pie chart: Share of recipes per difficulty ---
+            difficulty_counts = recipe_df['difficulty'].value_counts()
+            pie_df = pd.DataFrame({'price': difficulty_counts.values})
+            chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
+
+            # --- 3. Line chart: Cooking times trend (ordered by name) ---
+            line_df = recipe_df.sort_values('name')
+            chart_line = get_chart('line', line_df)
         else:
             recipe_df = None
     else:
@@ -151,7 +149,9 @@ def search_view(request):
     context = {
         'form': form, 
         'recipes': recipes,
-        'chart': chart
+        'chart_bar': chart_bar,
+        'chart_pie': chart_pie,
+        'chart_line': chart_line,
     }
 
     return render(request, 'recipe/recipes_search.html', context)

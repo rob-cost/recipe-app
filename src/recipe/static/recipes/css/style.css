@@ -578,6 +578,45 @@
           width: 25%;
       }
 
+      /* Chart Section */
+      .chart-section {
+          padding: 3rem;
+          background: #faf8f5;
+          margin-top: 4rem;
+      }
+
+      .chart-section h2 {
+          text-align: center;
+          font-size: 2.2rem;
+          font-weight: 400;
+          margin-bottom: 0.5rem;
+          color: #2c3e50;
+      }
+
+      .chart-section img {
+          width: 100%;
+          max-width: 900px;
+          height: auto;
+          border-radius: 5px;
+          object-fit: contain;
+          background: white;
+      }
+
+      .chart-item {
+          text-align: center;
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
+          padding: 10px;
+      }
+
+      .chart-item img {
+          padding: 5px;
+      }
+
+      .chart-item h3 {
+          margin-bottom: 1rem;
+      }
+
       @media (max-width: 768px) {
           .hero h1 {
               font-size: 2.5rem;

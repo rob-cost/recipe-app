@@ -1,6 +1,7 @@
 from io import BytesIO 
 import base64
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 def get_graph():
    #create a BytesIO buffer for the image
@@ -30,31 +31,30 @@ def get_graph():
 def get_chart(chart_type, data, **kwargs):
    #switch plot backend to AGG (Anti-Grain Geometry) - to write to file
    #AGG is preferred solution to write PNG files
-   plt.switch_backend('AGG')
+    plt.switch_backend('AGG')
 
    #specify figure size
-   fig=plt.figure(figsize=(6,3))
+    fig=plt.figure(figsize=(12,6))
 
    #select chart_type based on user input from the form
-   if chart_type == '#1':
-       #plot bar chart between date on x-axis and quantity on y-axis
-       plt.bar(data['date_created'], data['quantity'])
+    if chart_type == 'bar':
+        plt.bar(data['name'], data['cooking_time'], color=plt.cm.tab20.colors)
+        plt.xlabel('Recipe Name')
+        plt.ylabel('Cooking Time (min)')
+        plt.title('Cooking Time per Recipe')
+        plt.xticks(rotation=45, ha='right')
 
-   elif chart_type == '#2':
-       #generate pie chart based on the price.
-       #The book titles are sent from the view as labels
-       labels=kwargs.get('labels')
-       plt.pie(data['price'], labels=labels)
+    elif chart_type == 'pie':
+        labels = kwargs.get('labels')
+        plt.pie(data['price'], labels=labels, autopct='%1.1f%%', startangle=90)
+        plt.title('Recipes per Difficulty')
 
-   elif chart_type == '#3':
-       #plot line chart based on date on x-axis and price on y-axis
-       plt.plot(data['date_created'], data['price'])
-   else:
-       print ('unknown chart type')
+    elif chart_type == 'line':
+        plt.plot(data['name'], data['cooking_time'], marker='o', color='#d35400')
+        plt.xlabel('Recipe Name')
+        plt.ylabel('Cooking Time (min)')
+        plt.title('Cooking Time Trend')
+        plt.xticks(rotation=45, ha='right')
 
-   #specify layout details
-   plt.tight_layout()
-
-   #render the graph to file
-   chart =get_graph() 
-   return chart       
+    plt.tight_layout()
+    return get_graph()    

@@ -75,15 +75,26 @@
     </p>
   </div>
 </section>
-{% endif %} {% if chart %}
+{% endif %} {% if chart_bar or chart_pie or chart_line %}
 <section class="chart-section">
   <h2>Data Visualization</h2>
-  <div style="text-align: center; margin-top: 2rem">
-    <img
-      src="data:image/png;base64,{{ chart }}"
-      alt="Recipe Chart"
-      style="max-width: 600px"
-    />
+  <div class="chart-grid">
+    {% if chart_bar %}
+    <div class="chart-item">
+      <h3>Cooking Time per Recipe</h3>
+      <img src="data:image/png;base64,{{ chart_bar }}" alt="Bar Chart" />
+    </div>
+    {% endif %} {% if chart_pie %}
+    <div class="chart-item">
+      <h3>Recipes by Difficulty</h3>
+      <img src="data:image/png;base64,{{ chart_pie }}" alt="Pie Chart" />
+    </div>
+    {% endif %} {% if chart_line %}
+    <div class="chart-item">
+      <h3>Cooking Time Trend</h3>
+      <img src="data:image/png;base64,{{ chart_line }}" alt="Line Chart" />
+    </div>
+    {% endif %}
   </div>
 </section>
 {% endif %}{%endblock%} {% block scripts %}
