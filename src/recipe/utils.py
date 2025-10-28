@@ -1,7 +1,6 @@
 from io import BytesIO 
 import base64
 import matplotlib.pyplot as plt
-from matplotlib import cm
 
 def get_graph():
    #create a BytesIO buffer for the image

@@ -126,8 +126,10 @@ def search_view(request):
         if form.cleaned_data.get('max_cooking_time'):
             recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
-        # ✅ Generate the chart data
+        
         if recipes.exists():
+
+            # Convert QuerySet to pandas DataFrame
             recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
 
             # --- 1. Bar chart: Recipe names vs cooking time ---
@@ -153,5 +155,5 @@ def search_view(request):
         'chart_pie': chart_pie,
         'chart_line': chart_line,
     }
-
+    
     return render(request, 'recipe/recipes_search.html', context)
