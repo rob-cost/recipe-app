@@ -24,6 +24,7 @@
 
 <div class="divider"></div>
 <section class="popular-recipes">
+  {% if user.is_authenticated %}
   <h2>Popular Recipes</h2>
   <div class="recipe-grid">
     {% for recipe in popular_recipes %}
@@ -43,7 +44,7 @@
     <p style="grid-column: 1/-1; text-align: center; color: #999">
       No recipes yet. Start by adding your first recipe!
     </p>
-    {% endfor %}
+    {% endfor %} {% endif %}
   </div>
 </section>
 {%endblock%}

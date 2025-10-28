@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Recipe
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .forms import RecipeSearchForm
+from .forms import RecipeSearchForm, RecipeAddForm
 import pandas as pd
 from .utils import get_chart
 
@@ -157,3 +157,26 @@ def search_view(request):
     }
     
     return render(request, 'recipe/recipes_search.html', context)
+
+@login_required
+def add_recipe_view(request):
+    
+    if request.method == 'POST':
+        form = RecipeAddForm(request.POST, request.FILES)
+        if form.is_valid():
+            pic = form.cleaned_data['image']
+            data = {
+                'name': form.cleaned_data['name'],
+                'ingredients': ', '.join(form.cleaned_data['ingredients']),
+                'cooking_time': form.cleaned_data['cooking_time'],
+                'method': form.cleaned_data['method']
+            }
+            if pic:
+                data['pic'] = pic
+
+            recipe = Recipe.objects.create(**data)
+            messages.success(request, f'Recipe {recipe.name} created successfully')
+            form = RecipeAddForm()
+    else:
+        form = RecipeAddForm()
+    return render(request, 'recipe/recipe_add.html', {'form': form})

@@ -9,8 +9,8 @@ class Recipe (models.Model):
     ingredients = models.TextField(help_text="Insert ingredients separated by a comma")
     cooking_time = models.PositiveIntegerField(validators=[MinValueValidator(1)], help_text="Insert the cooking time in minutes")
     difficulty = models.CharField(max_length=30, editable=False)
-    method = models.TextField(help_text="Describe the cooking method of the recipe")
-    pic = models.ImageField(upload_to='recipes', default='no_picture.jpg')
+    method = models.TextField(blank=True, help_text="Describe the cooking method of the recipe")
+    pic = models.ImageField(blank=True, upload_to='recipes', default='no_picture.jpg')
     liked_by = models.ManyToManyField(User, related_name='liked_recipe', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
