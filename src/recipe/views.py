@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from .forms import RecipeSearchForm, RecipeAddForm
 import pandas as pd
 from .utils import get_chart
+from django.core.paginator import Paginator
 
 
 def login_view(request):
@@ -56,16 +57,24 @@ def homepage_view(request):
         recipe_likes_count = recipe.liked_by.count()
         if recipe_likes_count >=1:
             popular_recipes.append(recipe)
+    
+    paginator = Paginator(popular_recipes, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'popular_recipes': popular_recipes
+        'page_obj': page_obj
     }
+    
     return render(request, 'recipe/homepage.html', context)
 
 @login_required
 def recipes_view(request):
     recipes = Recipe.objects.all()
-    print(f'Recipes count: {recipes.count()}')
-    return render(request, 'recipe/recipes.html', {'recipes': recipes})
+    recipes_count = recipes.count()
+    paginator = Paginator(recipes, 6)
+    page_number = request.GET.get('page')
+    recipes = paginator.get_page(page_number)
+    return render(request, 'recipe/recipes.html', {'recipes': recipes, 'recipes_count': recipes_count})
 
 @login_required
 def recipe_details(request, recipe_id):
@@ -106,6 +115,7 @@ def toggle_like(request, recipe_id):
 def search_view(request):
     form = RecipeSearchForm(request.GET or None)
     recipes = None
+    recipes_count = 0
     chart_bar = chart_pie = chart_line = None
     
     if request.GET and form.is_valid():
@@ -129,6 +139,8 @@ def search_view(request):
         
         if recipes.exists():
 
+            recipes_count = recipes.count()
+
             # Convert QuerySet to pandas DataFrame
             recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
 
@@ -143,6 +155,12 @@ def search_view(request):
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
             line_df = recipe_df.sort_values('name')
             chart_line = get_chart('line', line_df)
+
+            
+            paginator = Paginator(recipes, 3)
+            page_number = request.GET.get('page')
+            recipes = paginator.get_page(page_number)
+
         else:
             recipe_df = None
     else:
@@ -151,6 +169,7 @@ def search_view(request):
     context = {
         'form': form, 
         'recipes': recipes,
+        'recipes_count': recipes_count,
         'chart_bar': chart_bar,
         'chart_pie': chart_pie,
         'chart_line': chart_line,

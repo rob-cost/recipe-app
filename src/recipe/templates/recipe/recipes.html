@@ -12,7 +12,7 @@
 
 <!-- All Recipes Section -->
 <section class="popular-recipes">
-  <h2>All Recipes ({{ recipes.count }})</h2>
+  <h2>All Recipes ({{ recipes_count }})</h2>
 
   {% if recipes %}
   <div class="recipe-grid">
@@ -38,5 +38,22 @@
     No recipes available yet. Check back soon!
   </p>
   {% endif %}
+
+  <!-- Pagination controls -->
+  <div class="pagination">
+    {% if recipes.has_previous %}
+    <a href="?page={{ recipes.previous_page_number }}" class="btn-primary"
+      >Prev</a
+    >
+    {% endif %}
+
+    <span class="page-info">
+      Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
+    </span>
+
+    {% if recipes.has_next %}
+    <a href="?page={{ recipes.next_page_number }}" class="btn-primary">Next</a>
+    {% endif %}
+  </div>
 </section>
 {%endblock%}

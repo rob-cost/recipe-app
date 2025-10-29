@@ -27,7 +27,7 @@
   {% if user.is_authenticated %}
   <h2>Popular Recipes</h2>
   <div class="recipe-grid">
-    {% for recipe in popular_recipes %}
+    {% for recipe in page_obj %}
     <a href="{% url 'recipe_details' recipe.id %}" class="recipe-card">
       <div class="recipe-img">
         {% if recipe.pic %}
@@ -45,6 +45,23 @@
       No recipes yet. Start by adding your first recipe!
     </p>
     {% endfor %} {% endif %}
+  </div>
+
+  <!-- Pagination controls -->
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn-primary"
+      >Prev</a
+    >
+    {% endif %}
+
+    <span class="page-info">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="btn-primary">Next</a>
+    {% endif %}
   </div>
 </section>
 {%endblock%}

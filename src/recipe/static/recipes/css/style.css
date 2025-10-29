@@ -318,6 +318,7 @@
           text-decoration: none;
           color: inherit;
           display: block;
+          max-width: 312px;
           transition: transform 0.2s, box-shadow 0.2s;
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
       }
@@ -623,6 +624,62 @@
 
       .chart-item h3 {
           margin-bottom: 1rem;
+      }
+
+      /* Paginator */
+      .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+          margin-top: 2rem;
+          padding: 1rem 0;
+      }
+
+      .page-info {
+          text-align: center;
+          justify-content: center;
+      }
+
+      .pagination a,
+      .pagination .btn-disabled {
+          padding: 0.5rem 1rem;
+          background: #d35400;
+          color: white;
+          text-decoration: none;
+          border-radius: 3px;
+          transition: background 0.3s;
+          min-width: 40px;
+          text-align: center;
+          font-size: 1.2rem;
+      }
+
+      .pagination a:hover {
+          background: #b84700;
+      }
+
+      .pagination .btn-disabled {
+          background: #ccc;
+          color: #999;
+          cursor: not-allowed;
+      }
+
+      .pagination .page-info {
+          color: #5a5a5a;
+          font-weight: 500;
+          padding: 0 1rem;
+      }
+
+      .pagination .btn-primary {
+          padding: 0.3rem 0.8rem;
+          background: #d35400;
+          color: white;
+          text-decoration: none;
+          border-radius: 3px;
+          transition: background 0.3s;
+          min-width: 40px;
+          text-align: center;
+          font-size: 0.8rem;
       }
 
       @media (max-width: 768px) {

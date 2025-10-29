@@ -45,7 +45,7 @@
 {% if recipes %}
 <section class="popular-recipes">
   <h2>
-    Search Results ({{ recipes.count }} recipe{{ recipes.count|pluralize }})
+    Search Results ({{ recipes_count }} recipe{{ recipes_count|pluralize }})
   </h2>
   <div class="recipe-grid">
     {% for recipe in recipes %}
@@ -64,6 +64,29 @@
       </div>
     </a>
     {% endfor %}
+  </div>
+  <!-- Pagination controls -->
+  <div class="pagination">
+    {% if recipes.has_previous %}
+    <a
+      href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ recipes.previous_page_number }}"
+      class="btn-primary"
+      >Prev</a
+    >
+
+    {% endif %}
+
+    <span class="page-info">
+      Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
+    </span>
+
+    {% if recipes.has_next %}
+    <a
+      href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ recipes.next_page_number }}"
+      class="btn-primary"
+      >Next</a
+    >
+    {% endif %}
   </div>
 </section>
 {% elif request.GET %}
