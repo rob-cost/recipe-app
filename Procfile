@@ -1,0 +1,1 @@
+web: gunicorn recipesApp.wsgi --chdir src --log-file -
