@@ -760,7 +760,6 @@ name = "recipes-app"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "cloudinary" },
     { name = "dj-database-url" },
     { name = "django" },
     { name = "django-cloudinary-storage" },
@@ -775,7 +774,6 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cloudinary", specifier = ">=1.44.1" },
     { name = "dj-database-url", specifier = ">=3.0.1" },
     { name = "django", specifier = ">=5.2.6" },
     { name = "django-cloudinary-storage", specifier = ">=0.3.0" },
