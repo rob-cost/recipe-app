@@ -145,8 +145,51 @@ class RecipeSearchView(TestCase):
         self.assertIsNotNone(chart_line)
 
         
+class RecipeAddViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username = 'Roberto',
+            password = 'ciaobellaitalia2025'
+        )
+        self.client.login(username="Roberto", password="ciaobellaitalia2025")
 
+    def test_add_recipe_view_status_code(self):
+        response = self.client.get(reverse('add_recipe'))
+        self.assertEqual(response.status_code, 200)
 
+    def test_add_recipe_view_template(self):
+        response = self.client.get(reverse('add_recipe'))
+        self.assertTemplateUsed(response, 'recipe/recipe_add.html')
 
+    def test_add_recipe_post_creates_recipe(self):
+        response = self.client.post(reverse('add_recipe'), {
+            'name': 'New Recipe',
+            'ingredients': "'ing-1', 'ing-2'",
+            'cooking_time': 25,
+            'method': 'Test method for new recipe',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(Recipe.objects.filter(name='New Recipe').exists())
 
+    def test_add_recipe_post_invalid_data(self):
+        response = self.client.post(reverse('add_recipe'), {
+            'name': '',  # Invalid as name is required
+            'ingredients': "'ing-1', 'ing-2'",
+            'cooking_time': 25,
+            'method': 'Test method for new recipe',
+        })
+        self.assertEqual(response.status_code, 200)  # Form re-rendered with errors
+        self.assertFalse(Recipe.objects.filter(name='').exists())
+
+    def test_add_recipe_difficulty_calculation(self):
+        response = self.client.post(reverse('add_recipe'), {
+            'name': 'Difficult Recipe',
+            'ingredients': "'ing-1', 'ing-2', 'ing-3', 'ing-4'",
+            'cooking_time': 20,
+            'method': 'Test method for difficult recipe',
+        })
+        self.assertEqual(response.status_code, 200)
+        recipe = Recipe.objects.get(name='Difficult Recipe')
+        self.assertEqual(recipe.difficulty, 'Hard')
 

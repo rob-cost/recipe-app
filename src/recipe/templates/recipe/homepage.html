@@ -44,7 +44,7 @@
     <p style="grid-column: 1/-1; text-align: center; color: #999">
       No recipes yet. Start by adding your first recipe!
     </p>
-    {% endfor %} {% endif %}
+    {% endfor %}
   </div>
 
   <!-- Pagination controls -->
@@ -61,7 +61,7 @@
 
     {% if page_obj.has_next %}
     <a href="?page={{ page_obj.next_page_number }}" class="btn-primary">Next</a>
-    {% endif %}
+    {% endif %} {% endif %}
   </div>
 </section>
 {%endblock%}
