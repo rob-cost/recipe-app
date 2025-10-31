@@ -84,7 +84,7 @@ class RecipeAddForm(forms.Form):
         max_length= 500,
         widget= forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'How to prepare this meal'
+            'placeholder': 'Enter a short description of the meal'
         })
     )       
 
