@@ -1,6 +1,7 @@
 # Recipe-App 🍳
 
 A comprehensive Django-based web application for managing and discovering recipes. Users can browse, search, add, and analyze recipes with an intuitive interface and powerful filtering capabilities.
+View the website here: https://stark-atoll-86571-47f58799b91f.herokuapp.com/
 
 ## Features
 
