@@ -1,4 +1,4 @@
-# Recipe-App 🍳
+# Meal-Mind 🍳
 
 A comprehensive Django-based web application for managing and discovering recipes. Users can browse, search, add, and analyze recipes with an intuitive interface and powerful filtering capabilities.
 View the website here:  https://recipes-discover-app-7480a557fb61.herokuapp.com
