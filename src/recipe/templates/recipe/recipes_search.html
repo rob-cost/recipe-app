@@ -35,8 +35,11 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit search-btn">
+      <button type="submit" value="search" class="btn-submit search-btn">
         Search & Analyze
+      </button>
+      <button type="submit" value="visualize" class="btn-submit search-btn">
+        Show Charts
       </button>
     </form>
   </div>
@@ -44,9 +47,7 @@
 
 {% if recipes %}
 <section class="popular-recipes">
-  <h2>
-    Search Results ({{ recipes_count }} recipe{{ recipes_count|pluralize }})
-  </h2>
+  <h2>Recipes found ({{ recipes_count }})</h2>
   <div class="recipe-grid">
     {% for recipe in recipes %}
     <a href="{% url 'recipe_details' recipe.id %}" class="recipe-card">
@@ -114,7 +115,7 @@
     </div>
     {% endif %} {% if chart_line %}
     <div class="chart-item">
-      <h3>Cooking Time Trend</h3>
+      <h3>Number Ingredients Used per Recipe</h3>
       <img src="data:image/png;base64,{{ chart_line }}" alt="Line Chart" />
     </div>
     {% endif %}

@@ -118,6 +118,15 @@ def search_view(request):
     recipes = None
     recipes_count = 0
     chart_bar = chart_pie = chart_line = None
+
+    context = {
+    'form': form,
+    'recipes': None,
+    'recipes_count': 0,
+    'chart_bar': None,
+    'chart_pie': None,
+    'chart_line': None,
+}
     
     if request.GET and form.is_valid():
 
@@ -137,50 +146,56 @@ def search_view(request):
         if form.cleaned_data.get('max_cooking_time'):
             recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
-        
-        recipes_count = recipes.count()
-
-        if recipes_count > 0:
-
-            # Convert QuerySet to pandas DataFrame
-            recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
-
-            # --- 1. Bar chart: Recipe names vs cooking time ---
-            chart_bar = get_chart('bar', recipe_df)
-
-            # --- 2. Pie chart: Share of recipes per difficulty ---
-            difficulty_counts = recipe_df['difficulty'].value_counts()
-            pie_df = pd.DataFrame({'count': difficulty_counts.values})
-            chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
-
-            # --- 3. Line chart: Cooking times trend (ordered by name) ---
-            try:
-                line_df = pd.DataFrame([
-                    {'name': r.name, 'ingredients_count': len([i.strip() for i in r.ingredients.split(",") if i.strip()])} 
-                    for r in recipes
-                ]).sort_values('name')
-            except Exception as e:
-                line_df = pd.DataFrame({'name': [], 'ingredients_count': []})
-
-            chart_line = get_chart('line', line_df)
-
+        action = request.GET.get('action')
+        if action == 'search':
             paginator = Paginator(recipes, 3)
             page_number = request.GET.get('page')
             recipes = paginator.get_page(page_number)
+            recipes_count = recipes.count()
 
-        else:
-            recipe_df = None
+            context = {
+                'recipes': recipes,
+                'recipes_count': recipes_count,
+            }
+
+        elif action == 'visualize':
+        
+            recipes_count = recipes.count()
+            if recipes_count > 0:
+
+                # Convert QuerySet to pandas DataFrame
+                recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
+
+                # --- 1. Bar chart: Recipe names vs cooking time ---
+                chart_bar = get_chart('bar', recipe_df)
+
+                # --- 2. Pie chart: Share of recipes per difficulty ---
+                difficulty_counts = recipe_df['difficulty'].value_counts()
+                pie_df = pd.DataFrame({'count': difficulty_counts.values})
+                chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
+
+                # --- 3. Line chart: Cooking times trend (ordered by name) ---
+                try:
+                    line_df = pd.DataFrame([
+                        {'name': r.name, 'ingredients_count': len([i.strip() for i in r.ingredients.split(",") if i.strip()])} 
+                        for r in recipes
+                    ]).sort_values('name')
+                except Exception as e:
+                    line_df = pd.DataFrame({'name': [], 'ingredients_count': []})
+
+                chart_line = get_chart('line', line_df)
+
+                context = {
+                    'chart_bar': chart_bar,
+                    'chart_pie': chart_pie,
+                    'chart_line': chart_line,
+                }
+            else:
+                recipe_df = None
     else:
         recipe_df = None
     
-    context = {
-        'form': form, 
-        'recipes': recipes,
-        'recipes_count': recipes_count,
-        'chart_bar': chart_bar,
-        'chart_pie': chart_pie,
-        'chart_line': chart_line,
-    }
+
     
     return render(request, 'recipe/recipes_search.html', context)
 

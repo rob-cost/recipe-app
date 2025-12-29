@@ -48,7 +48,7 @@ def get_chart(chart_type, data, **kwargs):
         ax.plot(data['name'], data['ingredients_count'], marker='o', color='#d35400')
         ax.set_xlabel('Recipe Name')
         ax.set_ylabel('Number Ingredients')
-        ax.set_title('Ingredients Trend')
+        ax.set_title('Number Ingredients Used per Recipe')
         plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
 
     plt.tight_layout()
