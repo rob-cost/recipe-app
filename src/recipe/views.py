@@ -188,12 +188,6 @@ def search_view(request):
                     'chart_pie': chart_pie,
                     'chart_line': chart_line,
                 }
-            else:
-                recipe_df = None
-    else:
-        recipe_df = None
-    
-
     
     return render(request, 'recipe/recipes_search.html', context)
 
