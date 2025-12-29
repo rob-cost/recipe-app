@@ -154,19 +154,12 @@ def search_view(request):
             chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
-            try:
-                data = []
-                for recipe in recipes:
-                    data.append({
-                        'name': recipe.name,
-                        'ingredients_count': recipe.ingredients.count()
-                    })
-                line_df = pd.DataFrame(data).sort_values('name')
-                chart_line = get_chart('line', line_df)
-            except Exception as e:
-                print(f'Problem in creating data frame: {e}')
-                pass
+            line_df = pd.DataFrame([
+                {'name': r.name, 'ingredients_count': r.ingredients.count()} 
+                for r in recipes
+            ]).sort_values('name')
 
+            chart_line = get_chart('line', line_df)
 
             
             paginator = Paginator(recipes, 3)
