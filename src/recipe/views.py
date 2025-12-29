@@ -146,19 +146,18 @@ def search_view(request):
         if form.cleaned_data.get('max_cooking_time'):
             recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
+        recipes_count = recipes.count()
         action = request.GET.get('action')
         if action == 'search':
             paginator = Paginator(recipes, 3)
             page_number = request.GET.get('page')
-            recipes = paginator.get_page(page_number)
-            recipes_count = recipes.count()
-
-            context = {
-                'recipes': recipes,
+            recipes_page = paginator.get_page(page_number)
+            context.update({
+                'recipes': recipes_page,
                 'recipes_count': recipes_count,
-            }
+            })
 
-        elif action == 'visualize':
+        elif action == 'visualize' and recipes_count > 0:
         
             recipes_count = recipes.count()
             if recipes_count > 0:
