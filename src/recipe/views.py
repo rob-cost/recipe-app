@@ -158,36 +158,39 @@ def search_view(request):
             })
 
         elif action == 'visualize' and recipes_count > 0:
-        
-            if recipes_count > 0:
 
-                # Convert QuerySet to pandas DataFrame
-                recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
+            try:
+                if recipes_count > 0:
 
-                # --- 1. Bar chart: Recipe names vs cooking time ---
-                chart_bar = get_chart('bar', recipe_df)
+                    # Convert QuerySet to pandas DataFrame
+                    recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
 
-                # --- 2. Pie chart: Share of recipes per difficulty ---
-                difficulty_counts = recipe_df['difficulty'].value_counts()
-                pie_df = pd.DataFrame({'count': difficulty_counts.values})
-                chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
+                    # --- 1. Bar chart: Recipe names vs cooking time ---
+                    chart_bar = get_chart('bar', recipe_df)
 
-                # --- 3. Line chart: Cooking times trend (ordered by name) ---
-                try:
-                    line_df = pd.DataFrame([
-                        {'name': r.name, 'ingredients_count': len([i.strip() for i in r.ingredients.split(",") if i.strip()])} 
-                        for r in recipes
-                    ]).sort_values('name')
-                except Exception as e:
-                    line_df = pd.DataFrame({'name': [], 'ingredients_count': []})
+                    # --- 2. Pie chart: Share of recipes per difficulty ---
+                    difficulty_counts = recipe_df['difficulty'].value_counts()
+                    pie_df = pd.DataFrame({'count': difficulty_counts.values})
+                    chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
-                chart_line = get_chart('line', line_df)
+                    # --- 3. Line chart: Cooking times trend (ordered by name) ---
+                    try:
+                        line_df = pd.DataFrame([
+                            {'name': r.name, 'ingredients_count': len([i.strip() for i in r.ingredients.split(",") if i.strip()])} 
+                            for r in recipes
+                        ]).sort_values('name')
+                    except Exception as e:
+                        line_df = pd.DataFrame({'name': [], 'ingredients_count': []})
 
-                context.update = {
-                    'chart_bar': chart_bar,
-                    'chart_pie': chart_pie,
-                    'chart_line': chart_line,
-                }
+                    chart_line = get_chart('line', line_df)
+
+                    context.update = {
+                        'chart_bar': chart_bar,
+                        'chart_pie': chart_pie,
+                        'chart_line': chart_line,
+                    }
+            except Exception as e:
+                messages.error(request, f'Error generating charts: {str(e)}')
     
     return render(request, 'recipe/recipes_search.html', context)
 
