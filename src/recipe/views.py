@@ -154,12 +154,15 @@ def search_view(request):
             chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
-            # line_df = pd.DataFrame([
-            #     {'name': r.name, 'ingredients_count': r.ingredients.count()} 
-            #     for r in recipes
-            # ]).sort_values('name')
+            try:
+                line_df = pd.DataFrame([
+                    {'name': r.name, 'ingredients_count': r.ingredients.count()} 
+                    for r in recipes
+                ]).sort_values('name')
+            except Exception as e:
+                line_df = pd.DataFrame({'name': [], 'ingredients_count': []})
 
-            # chart_line = get_chart('line', line_df)
+            chart_line = get_chart('line', line_df)
 
             paginator = Paginator(recipes, 3)
             page_number = request.GET.get('page')
