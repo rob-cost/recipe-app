@@ -159,8 +159,8 @@ def search_view(request):
                 line_df = pd.DataFrame(recipes).sort_values('name')
                 chart_line = get_chart('line', line_df)
             except Exception as e:
-                
                 print(f'Problem in creating data frame: {e}')
+                pass
 
 
             
@@ -179,6 +179,7 @@ def search_view(request):
         'recipes': recipes,
         'recipes_count': recipes_count,
         'chart_bar': chart_bar,
+        'chart_pie': chart_pie,
         'chart_line': chart_line,
     }
     
