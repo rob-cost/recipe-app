@@ -156,13 +156,11 @@ def search_view(request):
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
             try:
                 data = []
-
-                for recipe in Recipe.objects.prefetch_related('ingredients'):
+                for recipe in Recipe.objects.get('ingredients'):
                     data.append({
                         'name': recipe.name,
                         'ingredients_count': recipe.ingredients.count()
                     })
-
                 line_df = pd.DataFrame(data).sort_values('name')
                 chart_line = get_chart('line', line_df)
             except Exception as e:

@@ -52,7 +52,7 @@ def get_chart(chart_type, data, **kwargs):
         plt.plot(data['name'], data['ingredients_count'], marker='o', color='#d35400')
         plt.xlabel('Recipe Name')
         plt.ylabel('Number Ingredients')
-        plt.title('Ingredietns Trend')
+        plt.title('Ingredients Trend')
         plt.xticks(rotation=45, ha='right')
 
     plt.tight_layout()
