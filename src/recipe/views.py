@@ -138,9 +138,9 @@ def search_view(request):
             recipes = recipes.filter(cooking_time__lte=form.cleaned_data['max_cooking_time'])
 
         
-        if recipes.exists():
+        recipes_count = recipes.count()
 
-            recipes_count = recipes.count()
+        if recipes_count > 0:
 
             # Convert QuerySet to pandas DataFrame
             recipe_df = pd.DataFrame(recipes.values('name', 'cooking_time', 'difficulty'))
@@ -150,13 +150,13 @@ def search_view(request):
 
             # --- 2. Pie chart: Share of recipes per difficulty ---
             difficulty_counts = recipe_df['difficulty'].value_counts()
-            pie_df = pd.DataFrame({'price': difficulty_counts.values})
+            pie_df = pd.DataFrame({'count': difficulty_counts.values})
             chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
             try:
-                recipes = Recipe.objects.annotate(ingredients_count=Count('ingredients')).values('name', 'ingredients_count')
-                line_df = pd.DataFrame(recipes).sort_values('name')
+                recipe_line_chart = Recipe.objects.annotate(ingredients_count=Count('ingredients')).values('name', 'ingredients_count')
+                line_df = pd.DataFrame(recipe_line_chart).sort_values('name')
                 chart_line = get_chart('line', line_df)
             except Exception as e:
                 print(f'Problem in creating data frame: {e}')
@@ -164,7 +164,6 @@ def search_view(request):
 
 
             
-
             paginator = Paginator(recipes, 3)
             page_number = request.GET.get('page')
             recipes = paginator.get_page(page_number)

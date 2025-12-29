@@ -45,18 +45,14 @@ def get_chart(chart_type, data, **kwargs):
 
     elif chart_type == 'pie':
         labels = kwargs.get('labels')
-        plt.pie(data['price'], labels=labels, autopct='%1.1f%%', startangle=90)
+        plt.pie(data['count'], labels=labels, autopct='%1.1f%%', startangle=90)
         plt.title('Recipes per Difficulty')
 
     elif chart_type == 'line':
-        plt.plot(
-            data['name'],
-            data['ingredients_count'],
-            marker='o'
-        )
+        plt.plot(data['name'], data['ingredients_count'], marker='o', color='#d35400')
         plt.xlabel('Recipe Name')
-        plt.ylabel('Number of Ingredients')
-        plt.title('Ingredients per Recipe')
+        plt.ylabel('Number Ingredients')
+        plt.title('Ingredietns Trend')
         plt.xticks(rotation=45, ha='right')
 
     plt.tight_layout()
