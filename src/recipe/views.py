@@ -154,9 +154,14 @@ def search_view(request):
             chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
-            recipes = Recipe.objects.annotate(ingredients_count=Count('ingredients')).values('name', 'ingredients_count')
-            line_df = pd.DataFrame(recipes).sort_values('name')
-            chart_line = get_chart('line', line_df)
+            try:
+                recipes = Recipe.objects.annotate(ingredients_count=Count('ingredients')).values('name', 'ingredients_count')
+                line_df = pd.DataFrame(recipes).sort_values('name')
+                chart_line = get_chart('line', line_df)
+            except Exception as e:
+                
+                print(f'Problem in creating data frame: {e}')
+
 
             
 
