@@ -115,9 +115,6 @@ def toggle_like(request, recipe_id):
 @login_required
 def search_view(request):
     form = RecipeSearchForm(request.GET or None)
-    recipes = None
-    recipes_count = 0
-    chart_bar = chart_pie = chart_line = None
 
     context = {
     'form': form,
