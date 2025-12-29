@@ -156,7 +156,7 @@ def search_view(request):
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
             try:
                 line_df = pd.DataFrame([
-                    {'name': r.name, 'ingredients_count': r.ingredients.count()} 
+                    {'name': r.name, 'ingredients_count': len([i.strip() for i in r.ingredients.split(",") if i.strip()])} 
                     for r in recipes
                 ]).sort_values('name')
             except Exception as e:
