@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Recipe
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.core.exceptions import ValidationError
 from .forms import RecipeSearchForm, RecipeAddForm
 import pandas as pd
@@ -153,10 +154,12 @@ def search_view(request):
             chart_pie = get_chart('pie', pie_df, labels=difficulty_counts.index)
 
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
-            line_df = recipe_df.sort_values('name')
+            recipes = Recipe.objects.annotate(ingredients_count=Count('ingredients')).values('name', 'ingredients_count')
+            line_df = pd.DataFrame(recipes).sort_values('name')
             chart_line = get_chart('line', line_df)
 
             
+
             paginator = Paginator(recipes, 3)
             page_number = request.GET.get('page')
             recipes = paginator.get_page(page_number)
@@ -171,7 +174,6 @@ def search_view(request):
         'recipes': recipes,
         'recipes_count': recipes_count,
         'chart_bar': chart_bar,
-        'chart_pie': chart_pie,
         'chart_line': chart_line,
     }
     

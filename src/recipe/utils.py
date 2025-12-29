@@ -49,10 +49,14 @@ def get_chart(chart_type, data, **kwargs):
         plt.title('Recipes per Difficulty')
 
     elif chart_type == 'line':
-        plt.plot(data['name'], data['cooking_time'], marker='o', color='#d35400')
+        plt.plot(
+            data['name'],
+            data['ingredients_count'],
+            marker='o'
+        )
         plt.xlabel('Recipe Name')
-        plt.ylabel('Cooking Time (min)')
-        plt.title('Cooking Time Trend')
+        plt.ylabel('Number of Ingredients')
+        plt.title('Ingredients per Recipe')
         plt.xticks(rotation=45, ha='right')
 
     plt.tight_layout()
