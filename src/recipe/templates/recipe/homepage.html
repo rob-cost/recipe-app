@@ -23,8 +23,8 @@
 </section>
 
 <div class="divider"></div>
+{% if user.is_authenticated %}
 <section class="popular-recipes">
-  {% if user.is_authenticated %}
   <h2>Popular Recipes</h2>
   <div class="recipe-grid">
     {% for recipe in page_obj %}
