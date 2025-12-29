@@ -156,7 +156,7 @@ def search_view(request):
             # --- 3. Line chart: Cooking times trend (ordered by name) ---
             try:
                 data = []
-                for recipe in Recipe.objects.get('ingredients'):
+                for recipe in recipes:
                     data.append({
                         'name': recipe.name,
                         'ingredients_count': recipe.ingredients.count()
