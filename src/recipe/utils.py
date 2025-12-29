@@ -1,5 +1,7 @@
 from io import BytesIO 
 import base64
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 def get_graph():
@@ -28,32 +30,36 @@ def get_graph():
    return graph
 
 def get_chart(chart_type, data, **kwargs):
-   #switch plot backend to AGG (Anti-Grain Geometry) - to write to file
-   #AGG is preferred solution to write PNG files
-    plt.switch_backend('AGG')
+    fig, ax = plt.subplots(figsize=(12,6))  # explicit figure and axes
 
-   #specify figure size
-    fig=plt.figure(figsize=(12,6))
-
-   #select chart_type based on user input from the form
     if chart_type == 'bar':
-        plt.bar(data['name'], data['cooking_time'], color=plt.cm.tab20.colors)
-        plt.xlabel('Recipe Name')
-        plt.ylabel('Cooking Time (min)')
-        plt.title('Cooking Time per Recipe')
-        plt.xticks(rotation=45, ha='right')
+        ax.bar(data['name'], data['cooking_time'], color=plt.cm.tab20.colors)
+        ax.set_xlabel('Recipe Name')
+        ax.set_ylabel('Cooking Time (min)')
+        ax.set_title('Cooking Time per Recipe')
+        plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
 
     elif chart_type == 'pie':
         labels = kwargs.get('labels')
-        plt.pie(data['count'], labels=labels, autopct='%1.1f%%', startangle=90)
-        plt.title('Recipes per Difficulty')
+        ax.pie(data['count'], labels=labels, autopct='%1.1f%%', startangle=90)
+        ax.set_title('Recipes per Difficulty')
 
     elif chart_type == 'line':
-        plt.plot(data['name'], data['ingredients_count'], marker='o', color='#d35400')
-        plt.xlabel('Recipe Name')
-        plt.ylabel('Number Ingredients')
-        plt.title('Ingredients Trend')
-        plt.xticks(rotation=45, ha='right')
+        ax.plot(data['name'], data['ingredients_count'], marker='o', color='#d35400')
+        ax.set_xlabel('Recipe Name')
+        ax.set_ylabel('Number Ingredients')
+        ax.set_title('Ingredients Trend')
+        plt.setp(ax.get_xticklabels(), rotation=45, ha='right')
 
     plt.tight_layout()
-    return get_graph()    
+
+    # Save figure to base64
+    buffer = BytesIO()
+    fig.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close(fig)  # important: close figure
+
+    graph = base64.b64encode(image_png).decode('utf-8')
+    return graph
