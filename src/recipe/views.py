@@ -159,7 +159,6 @@ def search_view(request):
 
         elif action == 'visualize' and recipes_count > 0:
         
-            recipes_count = recipes.count()
             if recipes_count > 0:
 
                 # Convert QuerySet to pandas DataFrame
@@ -184,7 +183,7 @@ def search_view(request):
 
                 chart_line = get_chart('line', line_df)
 
-                context = {
+                context.update = {
                     'chart_bar': chart_bar,
                     'chart_pie': chart_pie,
                     'chart_line': chart_line,
