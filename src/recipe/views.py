@@ -181,11 +181,11 @@ def search_view(request):
 
                     chart_line = get_chart('line', line_df)
 
-                    context.update = {
+                    context.update({
                         'chart_bar': chart_bar,
                         'chart_pie': chart_pie,
                         'chart_line': chart_line,
-                    }
+                    })
             except Exception as e:
                 messages.error(request, f'Error generating charts: {str(e)}')
                 # Updated search_view function
