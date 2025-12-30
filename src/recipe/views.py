@@ -115,14 +115,14 @@ def toggle_like(request, recipe_id):
 @login_required
 def search_view(request):
     form = RecipeSearchForm(request.GET or None)
+    chart_bar = None
+    chart_pie = None
+    chart_line = None
 
     context = {
     'form': form,
     'recipes': None,
     'recipes_count': 0,
-    'chart_bar': None,
-    'chart_pie': None,
-    'chart_line': None,
 }
     
     if request.GET and form.is_valid():
@@ -181,7 +181,7 @@ def search_view(request):
 
                     chart_line = get_chart('line', line_df)
 
-                    context.update = {
+                    context.push = {
                         'chart_bar': chart_bar,
                         'chart_pie': chart_pie,
                         'chart_line': chart_line,
