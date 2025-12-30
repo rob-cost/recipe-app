@@ -100,16 +100,7 @@
     {% endif %}
   </div>
 </section>
-{% elif request.GET %}
-<section class="popular-recipes">
-  <div style="text-align: center; padding: 3rem">
-    <h2>No recipes found</h2>
-    <p style="color: #777; margin-top: 1rem">
-      Try adjusting your search criteria
-    </p>
-  </div>
-</section>
-{% endif %} {% if chart_bar or chart_pie or chart_line %}
+{% elif request.GET %} {% if chart_bar or chart_pie or chart_line %}
 <section class="chart-section">
   <h2>Data Visualization</h2>
   <div class="chart-grid">
@@ -131,7 +122,16 @@
     {% endif %}
   </div>
 </section>
-{% endif %}{%endblock%} {% block scripts %}
+{% else %}
+<section class="popular-recipes">
+  <div style="text-align: center; padding: 3rem">
+    <h2>No recipes found</h2>
+    <p style="color: #777; margin-top: 1rem">
+      Try adjusting your search criteria
+    </p>
+  </div>
+</section>
+{% endif %} {% endif %}{%endblock%} {% block scripts %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("searchForm");
