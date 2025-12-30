@@ -583,6 +583,12 @@
           border-color: #d35400;
       }
 
+      .search-buttons {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+      }
+
       .search-btn {
           margin-top: 0.5rem;
           width: 25%;
