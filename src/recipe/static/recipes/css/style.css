@@ -292,9 +292,9 @@
 
 
       .popular-recipes {
-          padding: 3rem;
+          padding: 2rem;
           background: #faf8f5;
-          margin-top: 4rem;
+          margin-top: 2rem;
       }
 
       .popular-recipes h2 {
@@ -597,9 +597,9 @@
 
       /* Chart Section */
       .chart-section {
-          padding: 3rem;
+          padding: 2rem;
           background: #faf8f5;
-          margin-top: 4rem;
+          margin-top: 2rem;
       }
 
       .chart-section h2 {
@@ -621,7 +621,7 @@
 
       .chart-item {
           text-align: center;
-          margin-top: 2rem;
+          margin-top: 1.2rem;
           margin-bottom: 1.5rem;
           padding: 10px;
       }
